@@ -37,13 +37,7 @@ tDCSdata$ErrPostDiff = tDCSdata$ErrPostUN - tDCSdata$ErrPostTR
 tDCSdata$ErrRetDiff  = tDCSdata$ErrRetUN - tDCSdata$ErrRetTR
 
 # ---- BASELINE DIFFERENCES
-scores      = c("age",
-                "ITPre",
-                "ETPre",
-                "ErrPre",
-                "maxMean",
-                "affectedMean",
-                "stoppedMean")
+scores      = c("age","ITPre","ETPre","ErrPre","maxMean","affectedMean","stoppedMean")
 groupCount  = count(tDCSdata, 'stimulation')
 shamN = subset(groupCount, stimulation==0)$freq
 activeN = subset(groupCount, stimulation==1)$freq
@@ -273,8 +267,7 @@ txtBFGroup = mapply(function(x, y)
 , bfAnova10, bfAnova01)
 
 resTxt = c(
-  "%s: %s main effect of Day, F(%d,%d) = %.2f, %s, ng = %.2f; %s the effect (BF10/BF01 = %.2f/%.2f). \n"
-  ,
+  "%s: %s main effect of Day, F(%d,%d) = %.2f, %s, ng = %.2f; %s the effect (BF10/BF01 = %.2f/%.2f). \n",
   "%s main effect of Group, F(%d,%d) = %.2f, %s, ng = %.2f; %s the effect (BF10/BF01 = %.2f/%.2f). \n"
 )
 resultsANOVA = mapply(
@@ -316,12 +309,7 @@ d = power.t.test(n = 25, NULL, 1, .05, .8, "two.sample", "two.sided")$d
 
 # which scores (columns) to process
 scores <-
-  c("ITPostDiff",
-    "ITRetDiff",
-    "ETPostDiff",
-    "ETRetDiff",
-    "ErrPostDiff",
-    "ErrRetDiff")
+  c("ITPostDiff","ITRetDiff","ETPostDiff","ETRetDiff","ErrPostDiff","ErrRetDiff")
 
 ttest = lapply(scores, function(x)
   t.test(tDCSdata[, x] ~ stimulation, data = tDCSdata, var.eq = TRUE))
@@ -329,9 +317,9 @@ txtSig = lapply(ttest, function(x)
   ifelse(round(x$p.value, 3) < 0.05, "Significant", "No significant"))
 
 # BAYES FACTOR
-x     = lapply(scores, function(x)
+x = lapply(scores, function(x)
   subset(tDCSdata[, x], tDCSdata$stimulation == 0))
-y     = lapply(scores, function(x)
+y = lapply(scores, function(x)
   subset(tDCSdata[, x], tDCSdata$stimulation == 1))
 
 bf    = mapply(function(x, y) {
@@ -370,12 +358,9 @@ ciActive  = lapply(y, function(y)
 
 # RESULtS
 resTxt = c(
-  "%s: %s difference between sham (M = %.2f, 95%% CI [%.2f, %.2f])"
-  ,
-  "and active (M = %.2f, 95%% CI [%.2f, %.2f]) groups;"
-  ,
-  "t(%d) = %.3f, p = %.3f, d = %.2f;"
-  ,
+  "%s: %s difference between sham (M = %.2f, 95%% CI [%.2f, %.2f])",
+  "and active (M = %.2f, 95%% CI [%.2f, %.2f]) groups;",
+  "t(%d) = %.3f, p = %.3f, d = %.2f;",
   "%s the effect (BF10/BF01 = %.2f/%.2f) \n"
 )
 resultsTTests = mapply(function(scores,txtSig,x,ciSham,y,ciActive,ttest,cd,txt,bf10,bf01)
