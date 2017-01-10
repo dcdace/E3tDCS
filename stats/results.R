@@ -73,9 +73,6 @@ baselineDiffpval = lapply(scores, function(x)
 baselineDiffpvalTxt = lapply(baselineDiffpval, function(x)
   ifelse(x < 0.001, "< 0.001", round(x, 3)))
 
-print(baselineDiff)
-baselineDiff$p.value
-
 resultsGender = matrix(
   c(
     paste(subset(genderCount, stimulation==0 & gender==2)$freq, ":", subset(genderCount, stimulation==0 & gender==1)$freq, sep = ""),
@@ -271,7 +268,8 @@ resTxt = c(
   "%s main effect of Group, F(%d,%d) = %.2f, %s, ng = %.2f; %s the effect (BF10/BF01 = %.2f/%.2f). \n"
 )
 resultsANOVA = mapply(
-  function(scores,txtSigDay,resANOVA,txtpvalDay,txtBFDay,bfAnova10,bfAnova01,txtSigGroup,txtpvalGroup,txtBFGroup)
+  function(scores,txtSigDay,resANOVA,txtpvalDay,txtBFDay,bfAnova10,bfAnova01,
+           txtSigGroup,txtpvalGroup,txtBFGroup)
   {
     sprintf(
       paste(resTxt, collapse = "")
@@ -322,7 +320,7 @@ x = lapply(scores, function(x)
 y = lapply(scores, function(x)
   subset(tDCSdata[, x], tDCSdata$stimulation == 1))
 
-bf    = mapply(function(x, y) {
+bf = mapply(function(x, y) {
   ttestBF(x, y, rscale = d)
 }, x, y)
 
@@ -331,7 +329,7 @@ bf10  = lapply(bf, function(x)
 bf01  = lapply(bf, function(x)
   round(1 / exp(1) ^ x@bayesFactor$bf, 2))
 
-txt   = mapply(function(x, y)
+txt = mapply(function(x, y)
 {
   ifelse(
     x > 1
@@ -348,10 +346,10 @@ txt   = mapply(function(x, y)
 , bf10, bf01)
 
 # EFFECT SIZE: cohen's d'
-cd        = mapply(function(tt, x, y)
+cd = mapply(function(tt, x, y)
   tt$statistic * sqrt(1 / length(x) + 1 / length(y)), ttest, x, y)
 # 95% CI
-ciSham    = lapply(x, function(x)
+ciSham = lapply(x, function(x)
   sd(x) / sqrt(length(x)) * 1.96)
 ciActive  = lapply(y, function(y)
   sd(y) / sqrt(length(y)) * 1.96)
