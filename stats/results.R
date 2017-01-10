@@ -8,7 +8,7 @@ tDCSdata = read.csv(file = "T:/_CogNeurPhD/03-Experiment_tDCS/tDCSraw.csv", head
 
 # BF. support for the effect (H1), based on Jeffreys
 support = c("anecdotal", "substantial", "strong", "very strong", "decisive")
-cuts    = c(1, 3, 10, 30, 100, Inf)
+cuts = c(1, 3, 10, 30, 100, Inf)
 
 # ---- CALCULATE NECCESSARY VARIABLES
 # Mean sensations
@@ -24,33 +24,33 @@ tDCSdata$ETPre = (tDCSdata$ETPreTR + tDCSdata$ETPreUN) / 2
 tDCSdata$ErrPre = (tDCSdata$ErrPreTR + tDCSdata$ErrPreUN) / 2
 
 # UN TR difference
-tDCSdata$ITPreDiff  = tDCSdata$ITPreUN / tDCSdata$ITPreTR - 1
+tDCSdata$ITPreDiff = tDCSdata$ITPreUN / tDCSdata$ITPreTR - 1
 tDCSdata$ITPostDiff = tDCSdata$ITPostUN / tDCSdata$ITPostTR - 1
-tDCSdata$ITRetDiff  = tDCSdata$ITRetUN / tDCSdata$ITRetTR - 1
+tDCSdata$ITRetDiff = tDCSdata$ITRetUN / tDCSdata$ITRetTR - 1
 
-tDCSdata$ETPreDiff  = tDCSdata$ETPreUN / tDCSdata$ETPreTR - 1
+tDCSdata$ETPreDiff = tDCSdata$ETPreUN / tDCSdata$ETPreTR - 1
 tDCSdata$ETPostDiff = tDCSdata$ETPostUN / tDCSdata$ETPostTR - 1
-tDCSdata$ETRetDiff  = tDCSdata$ETRetUN / tDCSdata$ETRetTR - 1
+tDCSdata$ETRetDiff = tDCSdata$ETRetUN / tDCSdata$ETRetTR - 1
 
-tDCSdata$ErrPreDiff  = tDCSdata$ErrPreUN - tDCSdata$ErrPreTR
+tDCSdata$ErrPreDiff = tDCSdata$ErrPreUN - tDCSdata$ErrPreTR
 tDCSdata$ErrPostDiff = tDCSdata$ErrPostUN - tDCSdata$ErrPostTR
-tDCSdata$ErrRetDiff  = tDCSdata$ErrRetUN - tDCSdata$ErrRetTR
+tDCSdata$ErrRetDiff = tDCSdata$ErrRetUN - tDCSdata$ErrRetTR
 
 # ---- BASELINE DIFFERENCES
-scores      = c("age","ITPre","ETPre","ErrPre","maxMean","affectedMean","stoppedMean")
-groupCount  = count(tDCSdata, 'stimulation')
+scores = c("age","ITPre","ETPre","ErrPre","maxMean","affectedMean","stoppedMean")
+groupCount = count(tDCSdata, 'stimulation')
 shamN = subset(groupCount, stimulation==0)$freq
 activeN = subset(groupCount, stimulation==1)$freq
 
 genderCount = count(tDCSdata, c('stimulation', 'gender'))
 
-meansSham   = lapply(scores, function(x)
+meansSham = lapply(scores, function(x)
   mean(subset(tDCSdata[, x], tDCSdata$stimulation == 0)))
 meansActive = lapply(scores, function(x)
   mean(subset(tDCSdata[, x], tDCSdata$stimulation == 1)))
-sdSham      = lapply(scores, function(x)
+sdSham = lapply(scores, function(x)
   sd(subset(tDCSdata[, x], tDCSdata$stimulation == 0)))
-sdActive    = lapply(scores, function(x)
+sdActive = lapply(scores, function(x)
   sd(subset(tDCSdata[, x], tDCSdata$stimulation == 1)))
 
 genderDiffpval = wilcox.test(
@@ -113,9 +113,9 @@ resultsBaseline = rbind(resultsGender, resultsOther)
 #---- OBSERvATION AccURACY ANOVA (DAY,STIMULATION)
 # Convert it to long format
 data_longAcc = gather(tDCSdata, trDay, Acc, D1Acc:D4Acc)
-data_longAcc$trDay          = factor(data_longAcc$trDay)
-data_longAcc$sID          = factor(data_longAcc$sID)
-data_longAcc$stimulation          = factor(data_longAcc$stimulation)
+data_longAcc$trDay = factor(data_longAcc$trDay)
+data_longAcc$sID = factor(data_longAcc$sID)
+data_longAcc$stimulation = factor(data_longAcc$stimulation)
 
 # get ANOVAs and Bayes Factors
 accANOVA = ezANOVA(
@@ -185,20 +185,20 @@ resultsAcc = sprintf(
 #---- EXECUTiON ANOVA (DAY,STIMULATION) ------
 scores = c("IT", "ET", "Err")
 # Convert it to long format
-data_longIT               = gather(tDCSdata, test, Diff, ITPreDiff:ITRetDiff)
-data_longIT$test          = factor(data_longIT$test)
-data_longIT$sID           = factor(data_longIT$sID)
-data_longIT$stimulation   = factor(data_longIT$stimulation)
+data_longIT = gather(tDCSdata, test, Diff, ITPreDiff:ITRetDiff)
+data_longIT$test = factor(data_longIT$test)
+data_longIT$sID = factor(data_longIT$sID)
+data_longIT$stimulation = factor(data_longIT$stimulation)
 
-data_longET               = gather(tDCSdata, test, Diff, ETPreDiff:ETRetDiff)
-data_longET$test          = factor(data_longET$test)
-data_longET$sID           = factor(data_longET$sID)
-data_longET$stimulation   = factor(data_longET$stimulation)
+data_longET = gather(tDCSdata, test, Diff, ETPreDiff:ETRetDiff)
+data_longET$test = factor(data_longET$test)
+data_longET$sID = factor(data_longET$sID)
+data_longET$stimulation = factor(data_longET$stimulation)
 
-data_longErr              = gather(tDCSdata, test, Diff, ErrPreDiff:ErrRetDiff)
-data_longErr$test         = factor(data_longErr$test)
-data_longErr$sID          = factor(data_longErr$sID)
-data_longErr$stimulation  = factor(data_longErr$stimulation)
+data_longErr = gather(tDCSdata, test, Diff, ErrPreDiff:ErrRetDiff)
+data_longErr$test = factor(data_longErr$test)
+data_longErr$sID = factor(data_longErr$sID)
+data_longErr$stimulation = factor(data_longErr$stimulation)
 
 # put all converted data frames into list
 dataList = list(data_longIT, data_longET, data_longErr)
@@ -324,9 +324,9 @@ bf = mapply(function(x, y) {
   ttestBF(x, y, rscale = d)
 }, x, y)
 
-bf10  = lapply(bf, function(x)
+bf10 = lapply(bf, function(x)
   round(exp(1) ^ x@bayesFactor$bf, 2))
-bf01  = lapply(bf, function(x)
+bf01 = lapply(bf, function(x)
   round(1 / exp(1) ^ x@bayesFactor$bf, 2))
 
 txt = mapply(function(x, y)
@@ -351,7 +351,7 @@ cd = mapply(function(tt, x, y)
 # 95% CI
 ciSham = lapply(x, function(x)
   sd(x) / sqrt(length(x)) * 1.96)
-ciActive  = lapply(y, function(y)
+ciActive = lapply(y, function(y)
   sd(y) / sqrt(length(y)) * 1.96)
 
 # RESULtS
