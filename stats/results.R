@@ -3,7 +3,6 @@ library(tidyr)
 library(ez)
 library(BayesFactor)
 
-
 # import the data
 tDCSdata = read.csv(file = "T:/_CogNeurPhD/03-Experiment_tDCS/tDCSraw.csv", header = T)
 
